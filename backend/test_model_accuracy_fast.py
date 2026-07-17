@@ -1,0 +1,82 @@
+import os
+import torch
+from PIL import Image
+from core.cnn import DSEnvironmentCNN, TORCH_AVAILABLE, transformadores_imagem
+
+def test_model():
+    if not TORCH_AVAILABLE:
+        print("Error: PyTorch not available.")
+        return
+
+    MODEL_PATH = "data/models/modelo_cnn.pth"
+    DATASET_DIR = "data/dataset"
+
+    if not os.path.exists(MODEL_PATH):
+        print(f"Error: Model file {MODEL_PATH} not found.")
+        return
+
+    device = "cpu"
+    print(f"Loading model from {MODEL_PATH} on {device}...")
+    
+    modelo = DSEnvironmentCNN().to(device)
+    try:
+        state_dict = torch.load(MODEL_PATH, map_location=device)
+        model_dict = modelo.state_dict()
+        
+        if "clima_head.weight" in state_dict and state_dict["clima_head.weight"].shape != model_dict["clima_head.weight"].shape:
+            print("Adaptando clima_head de 4 para 3 classes...")
+            state_dict["clima_head.weight"] = state_dict["clima_head.weight"][:3, :]
+            state_dict["clima_head.bias"] = state_dict["clima_head.bias"][:3]
+            
+        matching_state_dict = {}
+        for k, v in state_dict.items():
+            if k in model_dict and v.shape == model_dict[k].shape:
+                matching_state_dict[k] = v
+        model_dict.update(matching_state_dict)
+        modelo.load_state_dict(model_dict)
+        print("Modelo carregado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao carregar modelo: {e}")
+        return
+
+    modelo.eval()
+
+    grupos = {
+        "climate": ["sunny", "rain", "snow"],
+        "terrain": ["vegetation", "rocky", "mountainous", "snowy", "water", "urban"],
+        "ep_state": ["normal", "ep_area", "ep_near", "ep_combat", "ep_boss"]
+    }
+
+    print("\n--- Previsões Rápidas (Primeiras 3 imagens de cada classe) ---")
+    for grupo, subpastas in grupos.items():
+        for subpasta in subpastas:
+            subpasta_path = os.path.join(DATASET_DIR, grupo, subpasta)
+            if not os.path.exists(subpasta_path):
+                continue
+            
+            count = 0
+            for file in os.listdir(subpasta_path):
+                if not file.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                    continue
+                if count >= 3:
+                    break
+                
+                caminho_img = os.path.join(subpasta_path, file)
+                try:
+                    with Image.open(caminho_img) as img:
+                        tensor_img = transformadores_imagem(img.convert("RGB")).unsqueeze(0).to(device)
+                    
+                    with torch.no_grad():
+                        out_clima, out_terreno, out_ep = modelo(tensor_img)
+                        
+                    pred_clima = grupos["climate"][out_clima.argmax(dim=1).item()]
+                    pred_terreno = grupos["terrain"][out_terreno.argmax(dim=1).item()]
+                    pred_ep = grupos["ep_state"][out_ep.argmax(dim=1).item()]
+                    
+                    print(f"Imagem: {subpasta}/{file} -> Predição: Clima={pred_clima}, Terreno={pred_terreno}, EP={pred_ep}")
+                    count += 1
+                except Exception as e:
+                    print(f"Erro processando {file}: {e}")
+
+if __name__ == "__main__":
+    test_model()

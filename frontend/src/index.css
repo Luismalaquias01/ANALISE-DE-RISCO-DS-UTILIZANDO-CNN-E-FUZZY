@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bgMain: #050A0F;
+  --color-bgSidebar: #0B1218;
+  --color-bgCard: #0E1820;
+  --color-bgCardHover: #101C24;
+  --color-borderColor: #1D3038;
+  --color-chiralBlue: #00E5FF;
+  --color-blueMain: #2F80ED;
+  --color-blueLight: #56CCF2;
+  --color-greenMain: #2ECC71;
+  --color-yellowMain: #F2C94C;
+  --color-orangeMain: #F2994A;
+  --color-odradekOrange: #FF7A00;
+  --color-redMain: #EB5757;
+  --color-textMain: #F4F7FA;
+  --color-textSecondary: #9BAAB4;
+  --color-textMuted: #61717C;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bgMain);
+  color: var(--color-textMain);
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars for a sleek tech dashboard */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0F1115;
+}
+::-webkit-scrollbar-thumb {
+  background: #252A34;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* Keyframes and classes for animations */
+@keyframes pulse-border-blue {
+  0%, 100% {
+    border-color: rgba(0, 229, 255, 0.1);
+    box-shadow: 0 0 0 0 rgba(0, 229, 255, 0);
+  }
+  50% {
+    border-color: rgba(0, 229, 255, 0.4);
+    box-shadow: 0 0 10px 0 rgba(0, 229, 255, 0.15);
+  }
+}
+
+@keyframes pulse-border-orange {
+  0%, 100% {
+    border-color: rgba(255, 122, 0, 0.15);
+    box-shadow: 0 0 0 0 rgba(255, 122, 0, 0);
+  }
+  50% {
+    border-color: rgba(255, 122, 0, 0.6);
+    box-shadow: 0 0 12px 1px rgba(255, 122, 0, 0.25);
+  }
+}
+
+@keyframes pulse-border-red {
+  0%, 100% {
+    border-color: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.8);
+    box-shadow: 0 0 16px 2px rgba(239, 68, 68, 0.35);
+  }
+}
+
+.pulse-border-blue {
+  animation: pulse-border-blue 2s infinite;
+}
+.pulse-border-orange {
+  animation: pulse-border-orange 1.5s infinite;
+}
+.pulse-border-red {
+  animation: pulse-border-red 1s infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scanline-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 229, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Dot Grid Background for Sci-Fi telemetry panels */
+.dot-grid {
+  background-size: 16px 16px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.chiral-glow-blue {
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.odradek-glow-orange {
+  filter: drop-shadow(0 0 6px rgba(255, 122, 0, 0.5));
+}
+
+@keyframes text-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.text-blink {
+  animation: text-blink 1.2s infinite;
+}
+
+/* Odradek Rotating Animations */
+@keyframes spin-clockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-counterclockwise {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulse-scale-odradek {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.odradek-spin-slow {
+  animation: spin-clockwise 20s linear infinite;
+}
+
+.odradek-spin-medium {
+  animation: spin-clockwise 6s linear infinite, pulse-scale-odradek 1.5s ease-in-out infinite;
+}
+
+.odradek-spin-fast {
+  animation: spin-clockwise 2s linear infinite, pulse-scale-odradek 0.8s ease-in-out infinite;
+}
+
+.odradek-spin-boss {
+  animation: spin-clockwise 0.7s linear infinite, pulse-scale-odradek 0.4s ease-in-out infinite;
+}
+
+/* Bridges Terminal Corner Deco */
+.corner-deco {
+  position: relative;
+}
+.corner-deco::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid rgba(0, 229, 255, 0.5);
+  border-left: 2px solid rgba(0, 229, 255, 0.5);
+}
+.corner-deco::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid rgba(0, 229, 255, 0.5);
+  border-right: 2px solid rgba(0, 229, 255, 0.5);
+}
+
+@media print {
+  body,
+  .bg-bgMain,
+  .min-h-screen {
+    background-color: white !important;
+    background-image: none !important;
+    color: black !important;
+    font-size: 11pt !important;
+  }
+  
+  header,
+  .print\:hidden,
+  button,
+  select,
+  input {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    background: white !important;
+  }
+
+  .bg-bgCard {
+    background-color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .text-textMain,
+  .text-textSecondary,
+  .text-chiralBlue,
+  .text-textMuted {
+    color: black !important;
+  }
+
+  .bg-bgMain\/40,
+  .bg-bgMain\/30,
+  .bg-bgMain\/20,
+  .bg-bgMain\/10,
+  .bg-bgMain\/95 {
+    background-color: #f2f5f8 !important;
+    color: black !important;
+  }
+
+  .border-borderColor,
+  .border-borderColor\/40,
+  .border-borderColor\/20 {
+    border-color: #d1d5db !important;
+  }
+}
