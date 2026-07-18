@@ -20,8 +20,3 @@ __pycache__/
 .env
 .env.*
 *.local
-
-backend/data/dataset/
-backend/data/models/
-backend/data/removed_images/
-backend/scratch/
