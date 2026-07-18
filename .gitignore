@@ -1,71 +1,27 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+.DS_Store
+**/.DS_Store
 
-# Node
-node_modules
-dist
-dist-ssr
+*.log
+
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+
+venv/
+.venv/
+**/venv/
+**/.venv/
+
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+.env
+.env.*
 *.local
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Mac OS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# IDEs
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Project specific
-backend/data/models/
 backend/data/dataset/
+backend/data/models/
 backend/data/removed_images/
 backend/scratch/
-backend/server_backend.log
-backend/verbose_import.log
